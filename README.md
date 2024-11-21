@@ -1,5 +1,5 @@
 <p align="center">
- <h1 align="center">Weather_Forecasting</h1>
+ <h1 align="center">Weather_Forecasting_by_MachineLearning</h1>
 </p>
 
 ## Introduction
