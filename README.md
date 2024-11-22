@@ -21,8 +21,6 @@ This dataset contains weather data for Seattle, USA, recorded on a daily basis f
 
 The data is used to predict weather conditions based on these features.
 
-<img src="" width="800">
-
 You can download this in my file "dataset.csv"
 
 
