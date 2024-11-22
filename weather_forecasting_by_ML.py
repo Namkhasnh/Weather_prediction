@@ -407,7 +407,7 @@ knn_score_df3 = knn_df3.score(x_test_df3, y_test_df3)
 #*Decision Tree
 # Create a list of max depth values to try
 max_depth_range3 = list(range(1, 8))
- 
+
 # Train and evaluate a decision tree model with varying max depth values
 for depth in max_depth_range3:
     

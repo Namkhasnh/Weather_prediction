@@ -53,7 +53,7 @@ def process_inputs(inputs):
     dec_df3 = DecisionTreeClassifier(max_depth=4, max_leaf_nodes=15, random_state=0)
     dec_df3.fit(x_train_df3, y_train_df3)
     dec_score_df3 = dec_df3.score(x_test_df3, y_test_df3)
-      
+    
     
     
     df_new = pd.DataFrame([new_input], columns=["date", "precipitation", "high_temperature", "low_temperature", "wind"])

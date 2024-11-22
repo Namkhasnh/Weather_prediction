@@ -1,15 +1,9 @@
 # Import libraries
 import pandas as pd 
-import itertools 
 import numpy as np
 import matplotlib as plt
-import re
-import scipy 
 import seaborn as sns
 import matplotlib.pyplot as plt
-
-from scipy import stats
-from scipy.stats import pearsonr, ttest_ind 
 from sklearn.preprocessing import StandardScaler,LabelEncoder
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, classification_report,confusion_matrix
@@ -28,7 +22,45 @@ from sklearn.preprocessing import LabelEncoder
 lc = LabelEncoder()
 # Encode weather categorical column in data into integer form
 data["weather_encoded"]=lc.fit_transform(data["weather"])
-# Create a data cope
+
+
+# Create a dictionary that maps the encoded values to the actual names
+weather_names = dict(zip(lc.classes_, lc.transform(lc.classes_)))
+# Plot the count of each unique value in the weather column with actual names on the labels
+sns.countplot(x='weather_encoded', data=data, palette='hls', hue='weather_encoded', legend=False)
+plt.xticks(ticks=range(len(weather_names)), labels=list(weather_names.values()))
+plt.show()
+# Get the value counts of each unique value in the weather column
+weather_counts = data['weather'].value_counts()
+# Print the percentage of each unique value in the weather column
+for weather, count in weather_counts.items():
+    percent = (count / len(data)) * 100
+    print(f"Percent of {weather.capitalize()}: {percent:.2f}%")
+# From the above graph and analysis, we can see that our dataset contains mostly rain and sun weather conditions
+# It is approximately the same when accounting for 43.3% of the dataset.
+
+# Use a context manager to apply the default style to the plot
+with plt.style.context('default'):
+    
+    # Create a figure with the specified size and an axis object
+    fig, ax = plt.subplots(figsize=(12, 6))
+    
+    # Plot a boxplot with the given data, using the specified x and y variables, color palette, and axis object
+    sns.boxplot(x="precipitation", y="weather", data=data, palette="winter", ax=ax)
+    
+    # Optional: set axis labels and title if desired
+    ax.set(xlabel='Precipitation', ylabel='Weather', title='Boxplot of Weather vs. Precipitation') 
+plt.show()
+#From the boxplot between weather and precipitation above, the value of rain has many positive outliers,
+#You can try with all case between (weather, temp_max),(weather, temp_min),(weather,wind)
+
+# Handing null values
+null_count = data.isnull().sum()
+print(null_count)
+# By looking above details, we can conclude that there are no NULL values ​
+
+
+# Create a data copy
 data_copy = data.copy()
 data_copy=data_copy.drop("weather" ,axis=1)
 #remove outlier points and infinite values
@@ -41,9 +73,7 @@ IQR_date = Q3_date - Q1_date
 
 outlier_condition = ~((data_cols < (Q1_date - 1.5 * IQR_date)) | (data_cols > (Q3_date + 1.5 * IQR_date))).any(axis=1)
 
-df = data_copy[outlier_condition]
-df.precipitation=np.sqrt(data.precipitation)
-df.wind=np.sqrt(data.wind)
+data = data_copy[outlier_condition]
 
 data.date = pd.to_datetime(data.date)
 print(data)
@@ -55,5 +85,67 @@ x_data = ((data.loc[:,data.columns!="weather_encoded"]).astype(np.int64)).values
 y_data = data["weather_encoded"].values
 
 #split data test and data train
-x_train_df3,x_test_df3,y_train_df3,y_test_df3 = train_test_split(x_df3,y_df3,test_size=0.1,random_state=2)
+x_train,x_test,y_train,y_test = train_test_split(x_data,y_data,test_size=0.1,random_state=2)
 
+### Model training
+
+# K_nearest neighbor classifier (k =7)
+
+from sklearn.neighbors import KNeighborsClassifier
+knn = KNeighborsClassifier(n_neighbors = 7, p = 2, weights = 'distance' )
+knn.fit(x_train, y_train)
+knn_score = knn.score(x_test, y_test)
+print("KNN Accuracy:", knn_score)
+# The K-Neighbor Nearest Classifier model has reduced the accuracy to only 0.7 
+
+# Decision Tree
+
+from sklearn.tree import DecisionTreeClassifier
+# Create a list of max depth values to try
+max_depth_range = list(range(1, 8))
+# Train and evaluate a decision tree model with varying max depth values
+for depth in max_depth_range:
+    dec = DecisionTreeClassifier(max_depth=depth, max_leaf_nodes=15, random_state=0)
+    dec.fit(x_train, y_train)
+    dec_score = dec.score(x_test, y_test)
+    print("Decision Tree Accuracy: ", dec_score)
+# Decision Tree model with confidence 0.83 with parameter max_depth = 4.
+# This is the model with the best reliability among them. the results we have.
+
+# Logistic regression
+
+from sklearn.linear_model import LogisticRegression
+lg = LogisticRegression()
+lg.fit(x_train, y_train)
+lg_score = lg.score(x_test, y_test)
+print("Logistic Accuracy : ", lg_score)
+# The model above only gives 0.6129 accuracy, which is an extremely low result.
+
+
+# Here, we will use a typical model from the number of models built above to test the results.
+# We will choose a model built with Decision Tree with parameter max_depth = 4. This model has an accuracy of 0.83.
+
+for i in (range(len(y_test))):
+    print("----------------------------------")
+    ot = dec.predict([x_test[i]])
+    if(ot==0):
+        print("The weather predict is: Drizzle")
+    elif(ot==1):
+        print("The weather predict is: Fog")
+    elif(ot==2):
+        print("The weather predict is: Rain")
+    elif(ot==3):
+        print("The weather predict is: Snow")
+    else:
+        print("The weather predict is: Sun")
+    ac = y_test[i]
+    if(ac==0):
+        print("The weather actual is: Drizzle")
+    elif(ac==1):
+        print("The weather actual is: Fog")
+    elif(ac==2):
+        print("The weather actual is: Rain")
+    elif(ac==3):
+        print("The weather actual is: Snow")
+    else:
+        print("The weather actual is: Sun")
