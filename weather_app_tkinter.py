@@ -1,7 +1,7 @@
 
 import tkinter as tk
 from tkinter import messagebox
-from calculation import process_inputs
+from predict_weather_from_input import process_inputs
 
 def submit():
     try:

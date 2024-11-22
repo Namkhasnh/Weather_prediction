@@ -122,9 +122,11 @@ print("Logistic Accuracy : ", lg_score)
 # The model above only gives 0.6129 accuracy, which is an extremely low result.
 
 
-# Here, we will use a typical model from the number of models built above to test the results.
-# We will choose a model built with Decision Tree with parameter max_depth = 4. This model has an accuracy of 0.83.
+# In this script, we have built and evaluated several models.
+# We selected the Decision Tree model with max_depth = 4 as it achieved the best accuracy (0.83).
+# In the next script, "predict_weather_from_input.py", we will utilize this trained model to make predictions on new inputs.
 
+# Try test 
 for i in (range(len(y_test))):
     print("----------------------------------")
     ot = dec.predict([x_test[i]])
