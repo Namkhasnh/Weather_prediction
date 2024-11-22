@@ -1,3 +1,5 @@
+#! Import Library
+
 import itertools 
 import pandas as pd
 import numpy as np
@@ -12,6 +14,7 @@ from scipy.stats import pearsonr, ttest_ind
 from sklearn.preprocessing import StandardScaler,LabelEncoder
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, classification_report,confusion_matrix
+
 
 data = pd.read_csv("/Users/namkhanh/Desktop/Data Analysis/weather forcast/dataset.csv")
 
@@ -361,6 +364,7 @@ conf_matrix_date = confusion_matrix(y_test_date, y_pred_lg_date)
 
 df3 = pd.read_csv("/Users/namkhanh/Desktop/Data Analysis/weather forcast/dataset.csv")
 lc = LabelEncoder()
+
 df3["weather_encoded"]=lc.fit_transform(df3["weather"])
 
 df3_copy = df3.copy()
