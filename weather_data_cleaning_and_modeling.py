@@ -125,29 +125,3 @@ print("Logistic Accuracy : ", lg_score)
 # In this script, we have built and evaluated several models.
 # We selected the Decision Tree model with max_depth = 4 as it achieved the best accuracy (0.83).
 # In the next script, "predict_weather_from_input.py", we will utilize this trained model to make predictions on new inputs.
-
-# Try test 
-for i in (range(len(y_test))):
-    print("----------------------------------")
-    ot = dec.predict([x_test[i]])
-    if(ot==0):
-        print("The weather predict is: Drizzle")
-    elif(ot==1):
-        print("The weather predict is: Fog")
-    elif(ot==2):
-        print("The weather predict is: Rain")
-    elif(ot==3):
-        print("The weather predict is: Snow")
-    else:
-        print("The weather predict is: Sun")
-    ac = y_test[i]
-    if(ac==0):
-        print("The weather actual is: Drizzle")
-    elif(ac==1):
-        print("The weather actual is: Fog")
-    elif(ac==2):
-        print("The weather actual is: Rain")
-    elif(ac==3):
-        print("The weather actual is: Snow")
-    else:
-        print("The weather actual is: Sun")
