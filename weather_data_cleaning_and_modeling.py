@@ -10,7 +10,7 @@ from sklearn.metrics import accuracy_score, classification_report,confusion_matr
 
 # Upload and understand the dataset
 data = pd.read_csv("/Users/namkhanh/Desktop/Data Analysis/weather forcast/dataset.csv")
-print(data.head())
+print(data)
 print(data.shape)
 
 # There are 6 columns with a total of 1461 rows according to the observations in the dataset
@@ -22,8 +22,6 @@ from sklearn.preprocessing import LabelEncoder
 lc = LabelEncoder()
 # Encode weather categorical column in data into integer form
 data["weather_encoded"]=lc.fit_transform(data["weather"])
-
-
 # Create a dictionary that maps the encoded values to the actual names
 weather_names = dict(zip(lc.classes_, lc.transform(lc.classes_)))
 # Plot the count of each unique value in the weather column with actual names on the labels
@@ -49,7 +47,8 @@ with plt.style.context('default'):
     sns.boxplot(x="precipitation", y="weather", data=data, palette="winter", ax=ax)
     
     # Optional: set axis labels and title if desired
-    ax.set(xlabel='Precipitation', ylabel='Weather', title='Boxplot of Weather vs. Precipitation') 
+    ax.set(xlabel='Precipitation', ylabel='Weather', title='Boxplot of Weather vs Precipitation') 
+
 plt.show()
 #From the boxplot between weather and precipitation above, the value of rain has many positive outliers,
 #You can try with all case between (weather, temp_max),(weather, temp_min),(weather,wind)
