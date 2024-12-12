@@ -3,7 +3,10 @@ import numpy as np
 from sklearn.preprocessing import StandardScaler,LabelEncoder
 from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
-
+from imblearn.pipeline import Pipeline
+from collections import Counter
+from imblearn.over_sampling import SMOTE
+from imblearn.under_sampling import RandomUnderSampler
 
 def process_inputs(inputs):
     # Process the inputs
@@ -42,7 +45,9 @@ def process_inputs(inputs):
     y_data = data["weather_encoded"].values
 
 
-    x_train,x_test,y_train,y_test = train_test_split(x_data,y_data,test_size=0.1,random_state=2)
+    x_train,x_test,y_train,y_test = train_test_split(x_data,y_data,test_size=0.2, random_state=42, stratify=y_data)
+
+
     dec = DecisionTreeClassifier(max_depth=4, max_leaf_nodes=15, random_state=0)
     dec.fit(x_train, y_train)
 
