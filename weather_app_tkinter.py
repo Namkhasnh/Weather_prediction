@@ -32,30 +32,32 @@ def center_window(root, width, height):
 # Create the Tkinter window
 root = tk.Tk()
 root.title("Weather Prediction")
-
+root.lift()
+root.attributes('-topmost', True)
+root.after_idle(root.attributes, '-topmost', False)
 # Set the desired window size and center it
 window_width = 400
 window_height = 300
 center_window(root, window_width, window_height)
 
 # Create the input fields
-tk.Label(root, text="Date (YYYY-MM-DD):").grid(row=0, column=0, padx=10, pady=10)
+tk.Label(root, text="Ngày (YYYY-MM-DD):").grid(row=0, column=0, padx=10, pady=10)
 date_entry = tk.Entry(root)
 date_entry.grid(row=0, column=1, padx=10, pady=10)
 
-tk.Label(root, text="Precipitation:").grid(row=1, column=0, padx=10, pady=10)
+tk.Label(root, text="Lượng mưa (mm):").grid(row=1, column=0, padx=10, pady=10)
 precipitation_entry = tk.Entry(root)
 precipitation_entry.grid(row=1, column=1, padx=10, pady=10)
 
-tk.Label(root, text="High Temperature:").grid(row=2, column=0, padx=10, pady=10)
+tk.Label(root, text="Nhiệt độ cao nhất (độ C):").grid(row=2, column=0, padx=10, pady=10)
 high_temp_entry = tk.Entry(root)
 high_temp_entry.grid(row=2, column=1, padx=10, pady=10)
 
-tk.Label(root, text="Low Temperature:").grid(row=3, column=0, padx=10, pady=10)
+tk.Label(root, text="Nhiệt độ thấp nhất (độ C):").grid(row=3, column=0, padx=10, pady=10)
 low_temp_entry = tk.Entry(root)
 low_temp_entry.grid(row=3, column=1, padx=10, pady=10)
 
-tk.Label(root, text="Wind:").grid(row=4, column=0, padx=10, pady=10)
+tk.Label(root, text="Gió (km/h): ").grid(row=4, column=0, padx=10, pady=10)
 wind_entry = tk.Entry(root)
 wind_entry.grid(row=4, column=1, padx=10, pady=10)
 
